@@ -4,10 +4,9 @@
   <meta charset="utf-8">
   <!-- a11y : pas de user-scalable=no ni maximum-scale (WCAG 1.4.4) -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PORTAIL — spike J0</title>
+  <title>PORTAIL</title>
 
-  <!-- importmap : libs vendored en local, zéro CDN au runtime.
-       Lancer d'abord ./libs/fetch-libs.sh pour les récupérer. -->
+  <!-- importmap : libs vendored en local, zéro CDN au runtime. -->
   <script type="importmap">
   {
     "imports": {
@@ -19,56 +18,99 @@
   </script>
 
   <style>
-    :root { --cible: 56px; }
+    :root { --cible: 56px; --bleu: #6ec5ff; --fond: #0a1a2f; }
     * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; background: #000; color: #f5f5f5;
-      font-family: system-ui, "Atkinson Hyperlegible", Verdana, sans-serif; }
+    html, body { margin: 0; min-height: 100%; background: #000; color: #f5f5f5;
+      font-family: system-ui, "Atkinson Hyperlegible", Verdana, sans-serif; line-height: 1.5; }
+    [hidden] { display: none !important; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+    /* --- Écran d'accueil --- */
+    #accueil { position: fixed; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1.5rem; padding: 1.5rem;
+      text-align: center; background: radial-gradient(circle at 50% 35%, #14305a, #050a14 70%); }
+    #titre-accueil { font-size: clamp(2rem, 8vw, 3.5rem); margin: 0; letter-spacing: .08em; }
+    #accueil p { max-width: 32rem; margin: 0; opacity: .9; }
+    .accueil-choix { display: flex; flex-direction: column; gap: 1rem; width: min(90vw, 26rem); }
+
+    /* --- Boutons --- */
+    button { font: inherit; cursor: pointer; }
+    .bouton { min-height: var(--cible); padding: .9rem 1.3rem; border-radius: 14px;
+      border: 2px solid var(--bleu); background: rgba(110,197,255,.12); color: #f5f5f5;
+      font-size: 1.1rem; font-weight: 700; }
+    .bouton--secondaire { border-color: #cbd5e1; background: rgba(203,213,225,.08); }
+    .bouton:focus-visible, .narr-bouton:focus-visible, #sortir:focus-visible {
+      outline: 3px solid var(--bleu); outline-offset: 3px; }
+
+    /* --- Vue AR --- */
     #ar-container { position: fixed; inset: 0; }
-
-    /* Indice de scan */
-    #scan-hint {
-      position: fixed; left: 50%; bottom: 12vh; transform: translateX(-50%);
+    #scan-hint { position: fixed; left: 50%; bottom: 12vh; transform: translateX(-50%);
       max-width: 90vw; padding: .8rem 1.2rem; border-radius: 12px;
-      background: rgba(10,26,47,.85); text-align: center; font-size: 1.05rem;
-      line-height: 1.4;
-    }
-    #scan-hint[hidden] { display: none; }
+      background: rgba(10,26,47,.85); text-align: center; }
 
-    /* Bouton Sortir — garde-fou permanent (E1 / sûreté), >=44px */
-    #sortir {
-      position: fixed; top: env(safe-area-inset-top, 12px); right: 12px;
-      min-height: var(--cible); min-width: var(--cible);
-      padding: 0 1.1rem; border: 2px solid #f5f5f5; border-radius: 12px;
-      background: rgba(0,0,0,.6); color: #f5f5f5; font-size: 1.05rem;
-      font-weight: 700; cursor: pointer;
-    }
-    #sortir:focus-visible { outline: 3px solid #6ec5ff; outline-offset: 2px; }
+    /* --- Fond du mode sans AR --- */
+    #fond-plat { position: fixed; inset: 0;
+      background: radial-gradient(circle at 50% 30%, #14305a, #050a14 70%); }
+    #fond-plat-intro { position: fixed; left: 50%; top: 8vh; transform: translateX(-50%);
+      max-width: 90vw; text-align: center; font-style: italic; opacity: .85; padding: 0 1rem; }
 
-    /* Indicateur d'état immersion */
-    #etat {
-      position: fixed; left: 12px; top: env(safe-area-inset-top, 12px);
-      padding: .4rem .8rem; border-radius: 10px; background: rgba(0,0,0,.6);
-      font-size: .95rem;
-    }
-    .sr-only {
-      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
-    }
+    /* --- Boîte de dialogue (partagée AR / non-AR) --- */
+    #scene-narration { position: fixed; left: 50%; bottom: 0; transform: translateX(-50%);
+      width: min(94vw, 40rem); margin-bottom: max(1rem, env(safe-area-inset-bottom));
+      padding: 1.3rem; border-radius: 18px 18px 14px 14px;
+      background: rgba(5,12,24,.92); border: 1px solid rgba(110,197,255,.35);
+      box-shadow: 0 -8px 40px rgba(0,0,0,.5); }
+    .narr-texte { font-size: 1.15rem; margin: 0 0 1rem; }
+    .narr-choix { display: flex; flex-direction: column; gap: .6rem; }
+    .narr-bouton { min-height: var(--cible); padding: .8rem 1.1rem; text-align: left;
+      border-radius: 12px; border: 2px solid rgba(110,197,255,.5);
+      background: rgba(110,197,255,.10); color: #f5f5f5; font-size: 1.05rem; }
+    .narr-bouton--sortir { text-align: center; border-color: #f5f5f5; background: rgba(255,255,255,.08); }
+    .narr-recompense { display: flex; flex-direction: column; gap: .3rem; align-items: center;
+      text-align: center; margin: 1rem 0; padding: 1rem; border-radius: 14px;
+      background: rgba(110,197,255,.12); border: 1px dashed var(--bleu); }
+    .narr-recompense-icone { font-size: 2.5rem; }
+
+    /* --- Bouton Sortir global (garde-fou permanent) --- */
+    #sortir { position: fixed; top: env(safe-area-inset-top, 12px); right: 12px;
+      min-height: var(--cible); min-width: var(--cible); padding: 0 1.1rem;
+      border: 2px solid #f5f5f5; border-radius: 12px; background: rgba(0,0,0,.6);
+      color: #f5f5f5; font-size: 1.05rem; font-weight: 700; z-index: 10; }
+    #etat { position: fixed; left: 12px; top: env(safe-area-inset-top, 12px);
+      padding: .4rem .8rem; border-radius: 10px; background: rgba(0,0,0,.6); font-size: .95rem; }
+
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
   </style>
 </head>
 <body>
-  <main id="ar-container" aria-label="Vue de réalité augmentée"></main>
+  <!-- Accueil : deux chemins (une mécanique, deux chemins) -->
+  <section id="accueil" aria-labelledby="titre-accueil">
+    <h1 id="titre-accueil" tabindex="-1">PORTAIL</h1>
+    <p>Une photo devient la clé d’un lieu. Franchis le seuil — ou laisse l’histoire venir à toi.</p>
+    <div class="accueil-choix">
+      <button id="jouer-ar" class="bouton" type="button">🪞 Entrer par le portail<br><small>réalité augmentée — caméra</small></button>
+      <button id="jouer-sans-ar" class="bouton bouton--secondaire" type="button">📖 Vivre l’histoire sans AR<br><small>sans caméra, accessible</small></button>
+    </div>
+  </section>
 
-  <p id="scan-hint">📸 Cadre ton <strong>polaroid</strong> dans la vue.<br>Le portail s'ouvrira dessus.</p>
+  <!-- Vue AR -->
+  <main id="ar-container" aria-label="Vue de réalité augmentée" hidden></main>
+  <p id="scan-hint" hidden>📸 Cadre ton <strong>polaroid</strong> dans la vue.<br>Le portail s’ouvrira dessus.</p>
 
-  <button id="sortir" type="button" aria-describedby="aide-sortir">Sortir</button>
-  <span id="aide-sortir" class="sr-only">Quitte le monde virtuel et revient au monde réel, à tout moment, sans risque.</span>
+  <!-- Fond du mode sans AR -->
+  <div id="fond-plat" aria-hidden="true" hidden>
+    <p id="fond-plat-intro"></p>
+  </div>
 
-  <p id="etat" role="status" aria-live="polite">Monde réel</p>
+  <!-- Dialogue narratif (partagé) -->
+  <section id="scene-narration" hidden></section>
 
-  <!-- Région d'annonces a11y -->
+  <!-- Garde-fous + a11y -->
+  <button id="sortir" type="button" hidden>Sortir</button>
+  <p id="etat" role="status" aria-live="polite" hidden>Monde réel</p>
   <p class="sr-only" id="annonce" role="status" aria-live="polite"></p>
 
-  <script type="module" src="./js/spike-portail.js"></script>
+  <script type="module" src="./js/app.js"></script>
 </body>
 </html>
