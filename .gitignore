@@ -1,0 +1,10 @@
+# Libs vendored — régénérables via libs/fetch-libs.sh (non versionnées)
+libs/three.module.js
+libs/mindar-image-three.prod.js
+
+# Cible image personnelle (dérivée d'une photo) — hors versionnement
+assets/targets/*.mind
+
+# Système
+.DS_Store
+*~
