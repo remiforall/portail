@@ -1,0 +1,102 @@
+{
+  "name": "Le seuil",
+  "startnode": "1",
+  "creator": "PORTAIL (exemple — à remplacer par ton export Twine/Twison)",
+  "ifid": "00000000-0000-0000-0000-000000000000",
+  "passages": [
+    {
+      "pid": "1",
+      "name": "Depart",
+      "tags": ["debut"],
+      "text": "Tu tiens un polaroïd. Au dos, une phrase d’une écriture fine : « Ce que tu cherches est de l’autre côté. »\n\n[[Franchir le premier seuil->Premier seuil]]",
+      "links": [{ "name": "Franchir le premier seuil", "link": "Premier seuil" }]
+    },
+    {
+      "pid": "2",
+      "name": "Premier seuil",
+      "tags": ["portail-1"],
+      "text": "Une silhouette se tient là, ni homme ni femme, faite de lumière et d’ombre douce. « Voyageur. Rares sont ceux qui franchissent ce seuil. Que cherches-tu, ici ? »\n\n[[« Explorer ce monde. »->Explorer]]\n[[« Je voulais seulement voir. »->Voir]]\n[[« Je me suis perdu. »->Perdu]]",
+      "links": [
+        { "name": "« Explorer ce monde. »", "link": "Explorer" },
+        { "name": "« Je voulais seulement voir. »", "link": "Voir" },
+        { "name": "« Je me suis perdu. »", "link": "Perdu" }
+      ]
+    },
+    {
+      "pid": "3",
+      "name": "Explorer",
+      "tags": [],
+      "text": "« Explorer sans abîmer, c’est tout un art. Vois cette fleur de givre, à tes pieds. Qu’en fais-tu ? »\n\n[[La cueillir pour l’emporter.->Cueillir]]\n[[La photographier, et la laisser vivre.->Respecter]]",
+      "links": [
+        { "name": "La cueillir pour l’emporter.", "link": "Cueillir" },
+        { "name": "La photographier, et la laisser vivre.", "link": "Respecter" }
+      ]
+    },
+    {
+      "pid": "4",
+      "name": "Respecter",
+      "tags": ["badge-gardien-des-lieux"],
+      "text": "« Tu n’as rien pris, et pourtant tu emportes tout : l’image, l’instant, le souvenir. »\n\nLa silhouette souffle un mot à ton oreille et te montre une image : un vieux chêne, près d’un banc de pierre. « Le prochain seuil veille là-bas, dans ton monde. Le mot de passe est le nom de l’arbre. »\n\n[[Repartir vers le réel, pour de bon->Fin gardien]]\n[[Poursuivre la déambulation->Deuxieme seuil]]",
+      "links": [
+        { "name": "Repartir vers le réel, pour de bon", "link": "Fin gardien" },
+        { "name": "Poursuivre la déambulation", "link": "Deuxieme seuil" }
+      ]
+    },
+    {
+      "pid": "5",
+      "name": "Cueillir",
+      "tags": [],
+      "text": "À l’instant où tu la touches, la fleur fane et se défait en poussière bleue. « Ce que l’on arrache à ce monde s’éteint. Souviens-t’en, de l’autre côté aussi. »\n\n[[Baisser les yeux. « Pardon. »->Fin lecon]]",
+      "links": [{ "name": "Baisser les yeux. « Pardon. »", "link": "Fin lecon" }]
+    },
+    {
+      "pid": "6",
+      "name": "Voir",
+      "tags": [],
+      "text": "« Voir, c’est déjà entrer. Alors sois le bienvenu, le temps d’un regard. Et quand tu repasseras le seuil, garde une trace de ce que tu as vu. »\n\n[[Repasser le seuil->Fin passeur]]",
+      "links": [{ "name": "Repasser le seuil", "link": "Fin passeur" }]
+    },
+    {
+      "pid": "7",
+      "name": "Perdu",
+      "tags": [],
+      "text": "« Personne ne se perd vraiment ici. La sortie est derrière toi, toujours — c’est la première règle du seuil. »\n\n[[Repartir->Fin passeur]]",
+      "links": [{ "name": "Repartir", "link": "Fin passeur" }]
+    },
+    {
+      "pid": "8",
+      "name": "Deuxieme seuil",
+      "tags": ["portail-2"],
+      "text": "Un second seuil, plus sombre, t’attend. Une voix grave en monte : « Donne le mot que le Gardien t’a confié. »\n@code: chêne\n\n[[Entrer->La clairiere]]",
+      "links": [{ "name": "Entrer", "link": "La clairiere" }]
+    },
+    {
+      "pid": "9",
+      "name": "La clairiere",
+      "tags": ["badge-passeur-de-seuil"],
+      "text": "Au-delà du second seuil s’ouvre une clairière de lumière calme. Les deux mondes, un instant, se touchent. Tu les as reliés.\n\n[[Revenir, transformé->Fin passeur]]",
+      "links": [{ "name": "Revenir, transformé", "link": "Fin passeur" }]
+    },
+    {
+      "pid": "10",
+      "name": "Fin gardien",
+      "tags": ["badge-gardien-des-lieux"],
+      "text": "Tu repasses le seuil. Le monde réel te paraît soudain plus vivant — chaque arbre, chaque pierre. Tu n’as rien rapporté, et tu reviens plus riche.\n\n— Fin —",
+      "links": []
+    },
+    {
+      "pid": "11",
+      "name": "Fin passeur",
+      "tags": ["badge-passeur-de-seuil"],
+      "text": "Tu franchis le seuil en sens inverse. Quelque chose, en toi, est resté de l’autre côté — et quelque chose de là-bas est venu avec toi.\n\n— Fin —",
+      "links": []
+    },
+    {
+      "pid": "12",
+      "name": "Fin lecon",
+      "tags": [],
+      "text": "Tu repars sans badge, mais avec une leçon qui en vaut bien d’autres : ce monde ne se possède pas, il se traverse.\n\n— Fin —",
+      "links": []
+    }
+  ]
+}

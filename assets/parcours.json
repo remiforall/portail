@@ -1,0 +1,25 @@
+{
+  "_doc": "Config du concepteur (terrain/parcours en fichier — cf. gate J0). Définit l'histoire, le fichier de cibles MindAR, et la correspondance polaroïd -> point d'entrée dans l'histoire. Voir AUTHORING.md.",
+  "histoire": "./assets/histoire.json",
+  "cibles": "./assets/targets/polaroid.mind",
+  "polaroids": [
+    {
+      "cible": 0,
+      "entree": "Premier seuil",
+      "indice": "Le seuil de départ — scanne le polaroïd que tu as en main."
+    }
+  ],
+  "_polaroids_a_venir": "Quand tu auras compilé un .mind à plusieurs cibles, ajoute par ex. { \"cible\": 1, \"entree\": \"Deuxieme seuil\", \"indice\": \"Près du vieux chêne.\" }",
+  "badges": {
+    "gardien-des-lieux": {
+      "icone": "🌿",
+      "nom": "Gardien des lieux",
+      "texte": "Tu as traversé sans rien arracher."
+    },
+    "passeur-de-seuil": {
+      "icone": "🪞",
+      "nom": "Passeur de seuil",
+      "texte": "Tu as relié les deux mondes."
+    }
+  }
+}

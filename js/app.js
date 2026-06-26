@@ -1,5 +1,5 @@
-// Orchestrateur PORTAIL — écran d'accueil + routage des deux chemins
-// (réalité augmentée / sans AR), moteur de narration partagé.
+// Orchestrateur PORTAIL — accueil + routage AR / non-AR, narration Twison partagée.
+// Charge le parcours (config concepteur) et l'histoire (export Twine/Twison).
 
 import { Narration } from './narration.js';
 
@@ -14,13 +14,16 @@ const sortir = $('#sortir');
 const etat = $('#etat');
 const annonce = $('#annonce');
 
-let quete = null;
+let parcours = null;
+let histoire = null;
 let narration = null;
 let sessionAR = null;
 
-async function chargerQuete() {
-  if (!quete) quete = await fetch('./assets/quete.json').then((r) => r.json());
-  return quete;
+async function charger() {
+  if (!parcours) {
+    parcours = await fetch('./assets/parcours.json').then((r) => r.json());
+    histoire = await fetch(parcours.histoire).then((r) => r.json());
+  }
 }
 
 function afficher(el, visible) { if (el) el.hidden = !visible; }
@@ -28,61 +31,55 @@ function afficher(el, visible) { if (el) el.hidden = !visible; }
 function revenirAccueil() {
   if (narration) { narration.fermer(); narration = null; }
   if (sessionAR) { sessionAR.arreter(); sessionAR = null; }
-  afficher(arContainer, false);
-  afficher(scanHint, false);
-  afficher(fondPlat, false);
-  afficher(scene, false);
-  afficher(sortir, false);
-  afficher(etat, false);
+  [arContainer, scanHint, fondPlat, scene, sortir, etat].forEach((el) => afficher(el, false));
   afficher(accueil, true);
   const titre = $('#titre-accueil');
   if (titre) requestAnimationFrame(() => { try { titre.focus(); } catch { /* ignore */ } });
 }
 
-function nouvelleNarration(q) {
-  return new Narration({ quete: q, conteneur: scene, annonce, surSortie: revenirAccueil });
+function nouvelleNarration() {
+  return new Narration({
+    twison: histoire, badges: parcours.badges,
+    conteneur: scene, annonce, surSortie: revenirAccueil,
+  });
 }
 
 async function jouerAR() {
-  const q = await chargerQuete();
+  await charger();
   afficher(accueil, false);
   afficher(arContainer, true);
-  scanHint.hidden = false;
-  scanHint.innerHTML = '📸 Cadre ton <strong>polaroid</strong> dans la vue.<br>Le portail s’ouvrira dessus.';
   afficher(sortir, true);
   afficher(etat, true);
   etat.textContent = 'Monde réel';
+  scanHint.hidden = false;
+  scanHint.innerHTML = '📸 Cadre un <strong>polaroïd</strong> dans la vue.<br>Le portail s’ouvrira dessus.';
 
-  narration = nouvelleNarration(q);
-  const { demarrerPortailAR } = await import('./portail-ar.js');
-  sessionAR = demarrerPortailAR({
+  narration = nouvelleNarration();
+  const { demarrerParcoursAR } = await import('./portail-ar.js');
+  sessionAR = demarrerParcoursAR({
     conteneur: arContainer,
     indice: scanHint,
-    onEntree: () => {
+    cibles: parcours.cibles,
+    polaroids: parcours.polaroids,
+    onEntree: (entree) => {
       etat.textContent = 'Dans le monde virtuel';
       annonce.textContent = 'Tu as franchi le seuil.';
-      narration.demarrer();
+      narration.demarrer(entree);
     },
   });
 }
 
 async function jouerSansAR() {
-  const q = await chargerQuete();
+  await charger();
   afficher(accueil, false);
   afficher(fondPlat, true);
   afficher(sortir, true);
-  // Mode équivalent : même quête, sans caméra. On donne l'intro en contexte.
-  if (fondPlat) {
-    const intro = $('#fond-plat-intro');
-    if (intro) intro.textContent = q.intro || '';
-  }
-  narration = nouvelleNarration(q);
-  narration.demarrer();
+  narration = nouvelleNarration();
+  narration.demarrer(); // commence au passage "debut" / startnode
 }
 
 sortir.addEventListener('click', revenirAccueil);
 $('#jouer-ar').addEventListener('click', jouerAR);
 $('#jouer-sans-ar').addEventListener('click', jouerSansAR);
 
-// État initial : accueil seul.
 revenirAccueil();
