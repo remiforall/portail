@@ -1,9 +1,5 @@
-# Libs vendored — régénérables via libs/fetch-libs.sh (non versionnées)
-libs/*
-!libs/fetch-libs.sh
-
-# Cible image personnelle (dérivée d'une photo) — hors versionnement
-assets/targets/*.mind
+# Repo auto-suffisant : libs vendored et cible image versionnées (choix 2026-06-26).
+# Les libs restent régénérables via libs/fetch-libs.sh si besoin.
 
 # Système
 .DS_Store
