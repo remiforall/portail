@@ -12,11 +12,23 @@ MINDAR_VER="1.2.5"
 echo "→ three.js ${THREE_VER}"
 curl -fsSL "https://unpkg.com/three@${THREE_VER}/build/three.module.js" -o three.module.js
 
-echo "→ MindAR ${MINDAR_VER} (image-three, prod)"
-curl -fsSL "https://cdn.jsdelivr.net/npm/mind-ar@${MINDAR_VER}/dist/mindar-image-three.prod.js" -o mindar-image-three.prod.js
+# MindAR importe un addon three (CSS3DRenderer) en bare specifier "three/addons/...".
+# On le vendorise sous three-addons/ et on le mappe dans l'importmap d'index.html.
+echo "→ three addons (CSS3DRenderer)"
+mkdir -p three-addons/renderers
+curl -fsSL "https://unpkg.com/three@${THREE_VER}/examples/jsm/renderers/CSS3DRenderer.js" -o three-addons/renderers/CSS3DRenderer.js
+
+# MindAR : le build -three.prod.js importe dynamiquement des chunks voisins
+# (controller-*.js, etc.). Il FAUT tout le dossier dist/, pas juste l'entrée,
+# sinon le contrôleur de tracking renvoie 404 et la caméra ne démarre jamais.
+echo "→ MindAR ${MINDAR_VER} (dist/ complet via npm pack)"
+TMP="$(mktemp -d)"
+( cd "$TMP" && npm pack "mind-ar@${MINDAR_VER}" >/dev/null 2>&1 && tar xzf mind-ar-*.tgz )
+cp -f "$TMP"/package/dist/*.js ./
+rm -rf "$TMP"
 
 echo "✓ Libs dans $(pwd) :"
-ls -lh three.module.js mindar-image-three.prod.js
+ls -1 *.js
 echo
 echo "Rappel souveraineté : ces libs sont MIT/Apache, désormais servies en local."
 echo "Aucun appel CDN n'est fait quand on ouvre index.html."

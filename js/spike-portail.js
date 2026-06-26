@@ -27,7 +27,7 @@ const mindar = new MindARThree({
   uiLoading: 'no',
 });
 
-const { renderer, scene, camera } = mindar.scene;
+const { renderer, scene, camera } = mindar; // MindARThree expose ces champs directement
 const anchor = mindar.addAnchor(0);
 
 // --- Le MASQUE du portail (l'ouverture) ---------------------------------
@@ -150,9 +150,10 @@ const horloge = new THREE.Clock();
     });
   } catch (err) {
     $hint.hidden = false;
-    $hint.innerHTML = '⚠️ Impossible de démarrer la caméra ou de charger la cible.<br>' +
-      'Vérifie : libs récupérées (libs/fetch-libs.sh), fichier assets/targets/polaroid.mind présent, ' +
-      'page servie en HTTPS ou sur localhost.';
+    const nom = (err && err.name) ? err.name : 'Error';
+    const msg = String((err && (err.message || err)) || 'inconnue').replace(/</g, '&lt;');
+    $hint.innerHTML = '⚠️ Démarrage impossible.<br><strong>' + nom + '</strong><br><code>' +
+      msg + '</code>';
     console.error('[PORTAIL spike] échec démarrage :', err);
   }
 })();
