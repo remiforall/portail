@@ -1,0 +1,14 @@
+{
+  "name": "portail",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Jeu mobile AR narratif — scan polaroïd → portail → monde virtuel. Runtime vanilla (zéro build) ; npm sert uniquement à l'outillage de test.",
+  "type": "module",
+  "scripts": {
+    "serve": "python3 -m http.server 8000 --bind 127.0.0.1",
+    "test": "node tests/test-narration.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.1"
+  }
+}

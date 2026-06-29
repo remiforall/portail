@@ -1,6 +1,9 @@
 # Repo auto-suffisant : libs vendored et cible image versionnées (choix 2026-06-26).
 # Les libs restent régénérables via libs/fetch-libs.sh si besoin.
 
+# Outillage de test (dev only) — pas dans le runtime
+node_modules/
+
 # Système
 .DS_Store
 *~

@@ -28,10 +28,18 @@ avant d'écrire la moindre ligne du vrai MVP. Lire `README.md`.
 - **Tout en français** : commits, commentaires, UI.
 - Vérifier `node --check` sur les JS avant tout commit.
 
+## Tests
+- `npm install && npx playwright install chromium` (une fois), puis `npm run serve` + `npm test`.
+- `tests/test-narration.mjs` couvre en e2e le **mode non-AR** (narration Twison) : branches,
+  champ code, badges, fins. Le rendu AR (WebGL/MindAR) n'est pas couvert (nécessite un appareil).
+- Lancer cette suite après toute modif du moteur de narration. Cible : `17 checks OK`.
+
 ## Roadmap
 J0 spikes (dérisquage) → **J1 MVP « portail magique »** → **J2 V1 artistique photo (le pivot œuvre)**
 → J3 éditeur concepteur no-code → J4 social (modération/sûreté livrées **avant**, rencontres en dernier).
+État : J0→J2 livrés et consolidés (e2e narration). Prochaine étape J3.
 
 ## Git
-Pas encore initialisé. Quand ce sera le cas : `main` = prod, jamais de commit direct dessus,
-brancher `feat/…`. Hub = Forgejo (`forge:remiforall/portail.git`), miroir GitHub.
+`main` = source de vérité. Hub Forgejo (`forge:remiforall/portail.git`), `origin` pousse aussi
+le miroir GitHub public (`github.com:remiforall/portail`). Pas de commit direct sur `main` en
+contexte multi-machines : brancher `feat/…` et fetch/pull avant toute modif.
