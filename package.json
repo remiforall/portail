@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "serve": "python3 -m http.server 8000 --bind 127.0.0.1",
-    "test": "node tests/test-narration.mjs"
+    "test:unit": "node tests/test-export.mjs",
+    "test:e2e": "node tests/test-narration.mjs && node tests/test-editeur.mjs",
+    "test": "npm run test:unit && npm run test:e2e"
   },
   "devDependencies": {
     "playwright": "^1.61.1"

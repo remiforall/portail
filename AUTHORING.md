@@ -68,3 +68,23 @@ tagué `debut` (ou au passage de départ de Twine).
   atteignable *uniquement* par un polaroïd physique sans chemin alternatif par lien).
 - **Registres** respectant nature, faune, flore, humanité ; jamais de trait discriminant.
 - Codes simples (un mot), pas de devinette impossible : l'indice doit donner le mot dans le réel.
+
+## L'éditeur de terrain (carte) — `editeur.html`
+
+Pour le **géographique** (zones, position des polaroïds et indices sur le terrain réel), pas
+besoin d'éditer `parcours.json` à la main : ouvre **`editeur.html`** (outil concepteur).
+
+- **Fond de carte** : IGN Géoplateforme (service public FR, souverain, sans clé). Les tuiles se
+  chargent à l'usage de l'éditeur uniquement — le jeu, lui, ne dépend d'aucune carte tant que le
+  GPS n'est pas activé.
+- **Dessiner une zone** : outil polygone (coin haut-gauche de la carte) → nomme-la et choisis son
+  type (manuel, administratif, hydro, route, courbe de niveau) dans le panneau.
+- **Poser un polaroïd** : bouton 📸 puis clique sur la carte → renseigne l'index de cible `.mind`,
+  le **passage Twine d'entrée**, et l'indice (où le trouver).
+- **Poser un indice** : bouton 🔑 puis clique → saisis le texte.
+- **Importer** un `parcours.json` existant pour continuer l'édition ; **Exporter** pour récupérer
+  le `parcours.json` à déposer dans `assets/`.
+
+> Note (décision council) : le GPS reste **différé**. Les positions/zones sont enregistrées dès
+> maintenant mais ne verrouillent pas encore le jeu (elles serviront quand le gate de proximité
+> sera activé). Le polaroïd reste l'ancre du portail.

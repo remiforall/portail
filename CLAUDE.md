@@ -36,8 +36,13 @@ avant d'écrire la moindre ligne du vrai MVP. Lire `README.md`.
 
 ## Roadmap
 J0 spikes (dérisquage) → **J1 MVP « portail magique »** → **J2 V1 artistique photo (le pivot œuvre)**
-→ J3 éditeur concepteur no-code → J4 social (modération/sûreté livrées **avant**, rencontres en dernier).
-État : J0→J2 livrés et consolidés (e2e narration). Prochaine étape J3.
+→ **J3 éditeur concepteur no-code** → J4 social (modération/sûreté livrées **avant**, rencontres en dernier).
+État : J0→J3 livrés. Prochaine étape J4 (social), ou consolidation J3 (import frontières/rivières, scission de zones).
+
+## Dépendances approuvées
+- **Leaflet 1.9.4 + Leaflet.draw 1.0.4** (MIT, vendorisés `libs/`) — uniquement pour `editeur.html`.
+  Tuiles **IGN Géoplateforme** (`data.geopf.fr`, service public FR, sans clé) chargées à l'usage de
+  l'éditeur. Le runtime joueur n'embarque aucune carte (GPS différé). Approuvé 2026-06-29.
 
 ## Git
 `main` = source de vérité. Hub Forgejo (`forge:remiforall/portail.git`), `origin` pousse aussi

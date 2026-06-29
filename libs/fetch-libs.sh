@@ -27,6 +27,27 @@ TMP="$(mktemp -d)"
 cp -f "$TMP"/package/dist/*.js ./
 rm -rf "$TMP"
 
+# Leaflet + Leaflet.draw — uniquement pour l'éditeur concepteur (editeur.html).
+# Vendorisés en local (JS/CSS/images). Les tuiles, elles, viennent d'IGN à l'usage.
+LEAFLET_VER="1.9.4"
+LEAFLET_DRAW_VER="1.0.4"
+echo "→ Leaflet ${LEAFLET_VER}"
+TMPL="$(mktemp -d)"
+( cd "$TMPL" && npm pack "leaflet@${LEAFLET_VER}" >/dev/null 2>&1 && tar xzf leaflet-*.tgz )
+mkdir -p leaflet/images
+cp -f "$TMPL"/package/dist/leaflet.js leaflet/
+cp -f "$TMPL"/package/dist/leaflet.css leaflet/
+cp -f "$TMPL"/package/dist/images/* leaflet/images/
+rm -rf "$TMPL"
+echo "→ Leaflet.draw ${LEAFLET_DRAW_VER}"
+TMPD="$(mktemp -d)"
+( cd "$TMPD" && npm pack "leaflet-draw@${LEAFLET_DRAW_VER}" >/dev/null 2>&1 && tar xzf leaflet-draw-*.tgz )
+mkdir -p leaflet-draw/images
+cp -f "$TMPD"/package/dist/leaflet.draw.js leaflet-draw/
+cp -f "$TMPD"/package/dist/leaflet.draw.css leaflet-draw/
+cp -f "$TMPD"/package/dist/images/* leaflet-draw/images/ 2>/dev/null || true
+rm -rf "$TMPD"
+
 echo "✓ Libs dans $(pwd) :"
 ls -1 *.js
 echo
